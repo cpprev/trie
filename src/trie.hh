@@ -48,4 +48,11 @@ namespace trie
      * @return                      Vector of words in the trie
      */
     std::vector<std::string> list_words_in_trie (std::shared_ptr<t_trie> trie);
+
+    /**
+     * @param trie                  The trie
+     * @param word                  The word to autocomplete
+     * @return                      The words resulting from the autocompletion
+     */
+    std::vector<std::string> autocomplete (std::shared_ptr<t_trie> trie, const std::string& word);
 }

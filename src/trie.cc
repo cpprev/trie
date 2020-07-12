@@ -23,18 +23,45 @@ namespace trie
             {
                 std::string t(1, i + 'a');
                 std::string n = cur + t;
-                //std::cout << n << "\n";
                 list_words_in_tree_rec(trie->children[i], words, n);
             }
         }
     }
-
 
     std::vector<std::string> list_words_in_trie (std::shared_ptr<t_trie> trie)
     {
         std::vector<std::string> words;
         std::string cur;
         list_words_in_tree_rec(trie, words, cur);
+        return words;
+    }
+
+    std::vector<std::string> autocomplete (std::shared_ptr<t_trie> trie, const std::string& word)
+    {
+        /// Put word to lowercase only
+        std::string word_to_complete = utils::to_lowercase(word);
+
+        /// This will be the starting position for the call to 'list_words_in_trie'
+        /// after having found 'word' beforehand.
+        std::shared_ptr<t_trie> start;
+        for (int i = 0; word_to_complete[i]; ++i)
+        {
+            char c = word_to_complete[i];
+            if (not trie->children[c - 'a'])
+                return {};
+            if (not word_to_complete[i + 1])
+            {
+                start = trie->children[c - 'a'];
+                break;
+            }
+            trie = trie->children[c - 'a'];
+        }
+        /// Get all the words of the trie (that starts at the end of 'word')
+        std::vector<std::string> words = list_words_in_trie(start);
+        /// Adds the prefix ('word')
+        size_t len = words.size();
+        for (size_t i = 0; i < len; ++i)
+            words[i] = word + words[i];
         return words;
     }
 
