@@ -10,4 +10,10 @@ namespace utils
      * @return
      */
     std::string to_lowercase (const std::string& str);
+
+    /**
+     * @param word
+     * @return
+     */
+    bool is_word_valid (const std::string& word);
 }
