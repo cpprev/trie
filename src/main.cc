@@ -33,6 +33,19 @@ int main ()
             trie::add_word(trie, word_to_add);
             std::cout << "Word : \'" << word_to_add << "\' has been added to the Trie." << "\n";
         }
+        else if (not fnmatch("check *", operation.c_str(), 0))
+        {
+            if (operation.size() <= 5)
+            {
+                std::cout << "[Input Error] You have to give a word to add.\n";
+                continue;
+            }
+            std::string word_to_check = operation.substr(6);
+            if (not trie::is_word_in_trie(trie, word_to_check))
+                std::cout << "Word : \'" << word_to_check << "\' was not found in the Trie." << "\n";
+            else
+                std::cout << "Word : \'" << word_to_check << "\' was found in the Trie." << "\n";
+        }
         else if (not fnmatch("rm *", operation.c_str(), 0))
         {
             if (operation.size() <= 2)
