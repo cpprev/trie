@@ -12,6 +12,9 @@ set(SRC_FILES
         # Main
         src/main.cc
 
+        src/trie.cc
+
+        src/utils.cc
     )
 
 # Compilation flags
