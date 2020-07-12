@@ -10,6 +10,34 @@ namespace trie
             children[i] = nullptr;
     }
 
+    void list_words_in_tree_rec (std::shared_ptr<t_trie> trie, std::vector<std::string>& words, std::string& cur)
+    {
+        if (trie == nullptr)
+            return;
+        else if (trie->word)
+            words.push_back(cur);
+
+        for (int i = 0; i < 26; ++i)
+        {
+            if (trie->children[i])
+            {
+                std::string t(1, i + 'a');
+                std::string n = cur + t;
+                //std::cout << n << "\n";
+                list_words_in_tree_rec(trie->children[i], words, n);
+            }
+        }
+    }
+
+
+    std::vector<std::string> list_words_in_trie (std::shared_ptr<t_trie> trie)
+    {
+        std::vector<std::string> words;
+        std::string cur;
+        list_words_in_tree_rec(trie, words, cur);
+        return words;
+    }
+
     bool add_word (std::shared_ptr<t_trie> trie, const std::string& word)
     {
         /// Put word to lowercase only
