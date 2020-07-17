@@ -21,6 +21,51 @@ namespace utils
         return true;
     }
 
+    bool is_whitespace (char c)
+    {
+        return c == ' ' or c == '\t';
+    }
+
+    void rm_trailing_whitespaces(std::string& str)
+    {
+        int len = str.size();
+        int start;
+        for (start = 0; start < len and is_whitespace(str[start]); ++start) {}
+        int end;
+        for (end = len - 1; end >= 0 and is_whitespace(str[end]); --end) {}
+
+        std::string res;
+        for (int s = start; s <= end; ++s)
+        {
+            res += str[s];
+        }
+        str = res;
+    }
+
+    std::vector<std::string> cut_csv (const std::string& str)
+    {
+        std::vector<std::string> res;
+        std::string temp;
+        for (size_t i = 0; i < str.size(); ++i)
+        {
+            if ((str[i] == ',' or i == str.size() - 1))
+            {
+                if (not (str[i] == ',' and i == str.size() - 1))
+                {
+                    if (i == str.size() - 1)
+                        temp += str[i];
+                }
+                rm_trailing_whitespaces(temp);
+                res.push_back(temp);
+                temp = "";
+            }
+            else
+            {
+                temp += str[i];
+            }
+        }
+        return res;
+    }
 
     void SIGINT_handler (int s)
     {

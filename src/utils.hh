@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include <algorithm>
 #include <csignal>
@@ -18,6 +19,12 @@ namespace utils
      * @return
      */
     bool is_word_valid (const std::string& word);
+
+    /**
+     * @param str
+     * @return
+     */
+    std::vector<std::string> cut_csv (const std::string& str);
 
     /**
      * @param s

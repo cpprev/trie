@@ -32,15 +32,22 @@ int main ()
                 std::cout << "\033[1;31m" << "[Input Error] You have to give a word to add." << "\033[0m" << "\n";
                 continue;
             }
-            std::string word_to_add = operation.substr(4);
-            if (not utils::is_word_valid(word_to_add))
+            std::string input_words = operation.substr(4);
+            std::vector<std::string> words = utils::cut_csv(input_words);
+            for (const auto& word_to_add : words)
             {
-                std::cout << "\033[1;31m" << "[Input Error] Word is not valid, it has to consits of letters from the alphabet." << "\033[0m" << "\n";
-                continue;
+                if (not utils::is_word_valid(word_to_add))
+                {
+                    std::cout << "\033[1;31m"
+                              << "[Input Error] Word is not valid, it has to consits of letters from the alphabet."
+                              << "\033[0m" << "\n";
+                    continue;
+                }
+                /// Adding word to the trie
+                trie::add_word(trie, word_to_add);
+                std::cout << "\033[1;32m" << "\'" << word_to_add << "\' has been successfully added to the Trie."
+                          << "\033[0m" << "\n";
             }
-            /// Adding word to the trie
-            trie::add_word(trie, word_to_add);
-            std::cout << "\033[1;32m" << "\'" << word_to_add << "\' has been successfully added to the Trie." << "\033[0m" << "\n";
         }
         else if (not fnmatch("check*", operation.c_str(), 0))
         {
@@ -49,11 +56,16 @@ int main ()
                 std::cout << "\033[1;31m" << "[Input Error] You have to give a word to check." << "\033[0m" << "\n";
                 continue;
             }
-            std::string word_to_check = operation.substr(6);
-            if (not trie::is_word_in_trie(trie, word_to_check))
-                std::cout << "\033[1;32m" << "\'" << word_to_check << "\' "  << "\033[1;31m" << "IS NOT" << "\033[1;32m" << " present in the Trie." << "\033[0m" << "\n";
-            else
-                std::cout << "\033[1;32m" << "\'" << word_to_check << "\' IS present in the Trie." << "\n";
+            std::string input_words = operation.substr(6);
+            std::vector<std::string> words = utils::cut_csv(input_words);
+            for (const auto& word_to_check : words)
+            {
+                if (not trie::is_word_in_trie(trie, word_to_check))
+                    std::cout << "\033[1;32m" << "\'" << word_to_check << "\' " << "\033[1;31m" << "IS NOT"
+                              << "\033[1;32m" << " present in the Trie." << "\033[0m" << "\n";
+                else
+                    std::cout << "\033[1;32m" << "\'" << word_to_check << "\' IS present in the Trie." << "\n";
+            }
         }
         else if (not fnmatch("rm*", operation.c_str(), 0))
         {
@@ -62,20 +74,28 @@ int main ()
                 std::cout << "\033[1;31m" << "[Input Error] You have to give a word to remove." << "\033[0m" << "\n";
                 continue;
             }
-            std::string word_to_rm = operation.substr(3);
-            if (not utils::is_word_valid(word_to_rm))
+            std::string input_words = operation.substr(3);
+            std::vector<std::string> words = utils::cut_csv(input_words);
+            for (const auto& word_to_rm : words)
             {
-                std::cout << "\033[1;31m" << "[Input Error] Word is not valid, it has to consits of letters from the alphabet." << "\033[0m" << "\n";
-                continue;
+                if (not utils::is_word_valid(word_to_rm))
+                {
+                    std::cout << "\033[1;31m"
+                              << "[Input Error] Word is not valid, it has to consits of letters from the alphabet."
+                              << "\033[0m" << "\n";
+                    continue;
+                }
+                if (not trie::is_word_in_trie(trie, word_to_rm))
+                {
+                    std::cout << "\033[1;31m" << "[Runtime Error] Word : \'" << word_to_rm
+                              << "\' was not found in the Trie." << "\033[0m" << "\n";
+                    continue;
+                }
+                /// Removing word from the trie
+                trie::remove_word(trie, word_to_rm);
+                std::cout << "\033[1;32m" << "\'" << word_to_rm << "\' has been successfully removed from the Trie."
+                          << "\033[0m" << "\n";
             }
-            if (not trie::is_word_in_trie(trie, word_to_rm))
-            {
-                std::cout << "\033[1;31m" << "[Runtime Error] Word : \'" << word_to_rm << "\' was not found in the Trie." << "\033[0m" << "\n";
-                continue;
-            }
-            /// Removing word from the trie
-            trie::remove_word(trie, word_to_rm);
-            std::cout << "\033[1;32m" << "\'" << word_to_rm << "\' has been successfully removed from the Trie." << "\033[0m" << "\n";
         }
         else if (operation == "list")
         {
