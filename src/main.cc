@@ -127,6 +127,7 @@ int main ()
         {
             std::cout << "\033[1;31m" << "[Input Error] Unknown command" << "\033[0m" << "\n";
         }
+        std::cout << "\n";
     }
 
     return 0;
