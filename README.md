@@ -19,8 +19,17 @@
 ###
     
     Once the interactive mode is launched, the following commands are available :
-    "add WORD_TO_ADD"                   [Adds a word to the trie]
-    "check WORD_TO_CHECK"               [Checks if a word is present in the trie]
-    "rm WORD_TO_REMOVE"                 [Deletes a word from the trie]
-    "list"                              [Lists the words currently stored in the trie]
+    
+    "add WORD(S)_TO_ADD"                   [Adds a word to the trie]
+    Example : "add word", "add word1, word2, word3"
+    
+    "check WORD(S)_TO_CHECK"               [Checks if a word is present in the trie]
+    Example : "check word", "check word1, word2, word3"
+
+    "rm WORD(S)_TO_REMOVE"                 [Deletes a word from the trie]
+    Example : "rm word", "rm word1, word2, word3"
+
     "auto WORD_TO_AUTOCOMPLETE"         [Autocompletes a word and lists the results]
+    Example : "auto word"
+
+    "list"                              [Lists the words currently stored in the trie]
