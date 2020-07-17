@@ -20,4 +20,14 @@ namespace utils
         }
         return true;
     }
+
+
+    void SIGINT_handler (int s)
+    {
+        if (s == SIGINT)
+        {
+            std::cout << "\n" << "\033[1;34m" << "Quitting ..." << "\033[0m" << "\n";
+            exit(0);
+        }
+    }
 }

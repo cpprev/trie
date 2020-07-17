@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fnmatch.h>
+#include <csignal>
 
 #include "utils.hh"
 #include "trie.hh"
@@ -7,6 +8,13 @@
 int main ()
 {
     std::cout << "\033[1;34m" << "Launching ..." << "\033[0m" << "\n";
+
+    // Handle SIGINTs (Ctrl+C)
+    struct sigaction si;
+    si.sa_handler = utils::SIGINT_handler;
+    si.sa_flags = SA_NODEFER;
+    sigaction(SIGINT, &si, 0);
+
     std::shared_ptr<trie::t_trie> trie = std::make_shared<trie::t_trie>();
     while (true)
     {
