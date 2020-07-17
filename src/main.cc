@@ -6,6 +6,7 @@
 
 int main ()
 {
+    std::cout << "\033[1;34m" << "Launching ..." << "\033[0m" << "\n";
     std::shared_ptr<trie::t_trie> trie = std::make_shared<trie::t_trie>();
     while (true)
     {
@@ -13,86 +14,90 @@ int main ()
         std::getline (std::cin, operation);
         if (operation == "q" or operation == "quit" or operation == "stop")
         {
-            std::cout << "Quitting\n";
+            std::cout << "\033[1;34m" << "Quitting ..." << "\033[0m" << "\n";
             break;
         }
-        if (not fnmatch("add *", operation.c_str(), 0))
+        if (not fnmatch("add*", operation.c_str(), 0))
         {
-            if (operation.size() <= 3)
+            if (operation.size() <= 3 or operation[3] != ' ')
             {
-                std::cout << "[Input Error] You have to give a word to add.\n";
+                std::cout << "\033[1;31m" << "[Input Error] You have to give a word to add." << "\033[0m" << "\n";
                 continue;
             }
             std::string word_to_add = operation.substr(4);
             if (not utils::is_word_valid(word_to_add))
             {
-                std::cout << "[Input Error] Word is not valid, it has to consits of letters from the alphabet.\n";
+                std::cout << "\033[1;31m" << "[Input Error] Word is not valid, it has to consits of letters from the alphabet." << "\033[0m" << "\n";
                 continue;
             }
             /// Adding word to the trie
             trie::add_word(trie, word_to_add);
-            std::cout << "Word : \'" << word_to_add << "\' has been added to the Trie." << "\n";
+            std::cout << "\033[1;32m" << "\'" << word_to_add << "\' has been successfully added to the Trie." << "\033[0m" << "\n";
         }
-        else if (not fnmatch("check *", operation.c_str(), 0))
+        else if (not fnmatch("check*", operation.c_str(), 0))
         {
-            if (operation.size() <= 5)
+            if (operation.size() <= 5 or operation[5] != ' ')
             {
-                std::cout << "[Input Error] You have to give a word to add.\n";
+                std::cout << "\033[1;31m" << "[Input Error] You have to give a word to check." << "\033[0m" << "\n";
                 continue;
             }
             std::string word_to_check = operation.substr(6);
             if (not trie::is_word_in_trie(trie, word_to_check))
-                std::cout << "Word : \'" << word_to_check << "\' was not found in the Trie." << "\n";
+                std::cout << "\033[1;32m" << "\'" << word_to_check << "\' "  << "\033[1;31m" << "IS NOT" << "\033[1;32m" << " present in the Trie." << "\033[0m" << "\n";
             else
-                std::cout << "Word : \'" << word_to_check << "\' was found in the Trie." << "\n";
+                std::cout << "\033[1;32m" << "\'" << word_to_check << "\' IS present in the Trie." << "\n";
         }
-        else if (not fnmatch("rm *", operation.c_str(), 0))
+        else if (not fnmatch("rm*", operation.c_str(), 0))
         {
-            if (operation.size() <= 2)
+            if (operation.size() <= 2 or operation[2] != ' ')
             {
-                std::cout << "[Input Error] You have to give a word to remove.\n";
+                std::cout << "\033[1;31m" << "[Input Error] You have to give a word to remove." << "\033[0m" << "\n";
                 continue;
             }
             std::string word_to_rm = operation.substr(3);
             if (not utils::is_word_valid(word_to_rm))
             {
-                std::cout << "[Input Error] Word is not valid, it has to consits of letters from the alphabet.\n";
+                std::cout << "\033[1;31m" << "[Input Error] Word is not valid, it has to consits of letters from the alphabet." << "\033[0m" << "\n";
                 continue;
             }
             if (not trie::is_word_in_trie(trie, word_to_rm))
             {
-                std::cout << "[Runtime Error] Word : \'" << word_to_rm << "\' was not found in the Trie." << "\n";
+                std::cout << "\033[1;31m" << "[Runtime Error] Word : \'" << word_to_rm << "\' was not found in the Trie." << "\033[0m" << "\n";
                 continue;
             }
             /// Removing word from the trie
             trie::remove_word(trie, word_to_rm);
-            std::cout << "Word : \'" << word_to_rm << "\' has been removed from the Trie." << "\n";
+            std::cout << "\033[1;32m" << "\'" << word_to_rm << "\' has been successfully removed from the Trie." << "\033[0m" << "\n";
         }
         else if (operation == "list")
         {
-            std::cout << "The current words stored in the tree are :\n";
+            std::cout << "\033[1;33m" << "The current words stored in the tree are :" << "\033[0m" << "\n";
             int i = 1;
-            for (auto word : trie::list_words_in_trie(trie))
+            for (const auto& word : trie::list_words_in_trie(trie))
             {
-                std::cout << "[" << i << "] " << word << std::endl;
+                std::cout << "\033[1;35m" << "[" << i << "] " << word << "\033[0m" << "\n";
                 ++i;
             }
         }
-        else if (not fnmatch("auto *", operation.c_str(), 0))
+        else if (not fnmatch("auto*", operation.c_str(), 0))
         {
-            if (operation.size() <= 4)
+            if (operation.size() <= 4 or operation[4] != ' ')
             {
-                std::cout << "[Input Error] You have to give a word to remove.\n";
+                std::cout << "\033[1;31m" << "[Input Error] You have to give a word to remove." << "\033[0m" << "\n";
                 continue;
             }
             std::string word_to_complete = operation.substr(5);
-            std::cout << "The current words resulting from the autocompletion of \'" << word_to_complete << "\' are :\n";
+            std::cout << "\033[1;33m" << "The current words resulting from the autocompletion of \'" << word_to_complete << "\' are :" << "\033[0m" << "\n";
             int i = 1;
-            for (auto word : trie::autocomplete(trie, word_to_complete))
+            for (const auto& word : trie::autocomplete(trie, word_to_complete))
             {
-                std::cout << "[" << i << "] " << word << std::endl;
+                std::cout << "\033[1;35m" << "[" << i << "] " << word << "\033[0m" << "\n";
                 ++i;
             }
+        }
+        else
+        {
+            std::cout << "\033[1;31m" << "[Input Error] Unknown command" << "\033[0m" << "\n";
         }
     }
 
