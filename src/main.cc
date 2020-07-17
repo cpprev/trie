@@ -64,7 +64,7 @@ int main ()
                     std::cout << "\033[1;32m" << "\'" << word_to_check << "\' " << "\033[1;31m" << "IS NOT"
                               << "\033[1;32m" << " present in the Trie." << "\033[0m" << "\n";
                 else
-                    std::cout << "\033[1;32m" << "\'" << word_to_check << "\' IS present in the Trie." << "\n";
+                    std::cout << "\033[1;32m" << "\'" << word_to_check << "\' IS present in the Trie." << "\033[0m" <<  "\n";
             }
         }
         else if (not fnmatch("rm*", operation.c_str(), 0))
